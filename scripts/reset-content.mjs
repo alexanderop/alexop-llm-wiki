@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
 const args = process.argv.slice(2)
-if (args.some(arg => !['--yes', '--include-private', '--help'].includes(arg))) throw new Error('Unknown option. Use --help.')
+if (args.some(arg => !['--yes', '--help'].includes(arg))) throw new Error('Unknown option. Use --help.')
 if (args.includes('--help')) {
-  console.log('pnpm content:reset [--yes] [--include-private]\nPreview by default. --yes deletes public content and generated caches.\n--include-private also deletes private content. raw/, logs, code and Git history are preserved.')
+  console.log('pnpm content:reset [--yes]\nPreview by default. --yes deletes public content and generated caches. raw/, logs, code and Git history are preserved.')
   process.exit(0)
 }
 const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'))
@@ -22,7 +22,7 @@ for (const path of ['apps', 'apps/wiki', 'apps/wiki/content']) {
 }
 const targets = []
 const contentFolders = []
-for (const audience of args.includes('--include-private') ? ['public', 'private'] : ['public']) {
+for (const audience of ['public']) {
   const folder = join(root, 'apps/wiki/content', audience)
   await inspect(folder)
   contentFolders.push(folder)
@@ -35,7 +35,7 @@ for (const cache of ['.generated', '.output', '.data']) {
 console.log(args.includes('--yes') ? 'Deleting:' : 'Preview — nothing will be deleted:')
 for (const target of targets) console.log(`  ${relative(root, target)}`)
 if (!args.includes('--yes')) {
-  console.log('Add --yes to apply. Add --include-private to also remove private content.')
+  console.log('Add --yes to apply.')
 } else {
   for (const target of targets) await rm(target, { recursive: true, force: false })
   for (const folder of contentFolders) await writeFile(join(folder, '.gitkeep'), '', { flag: 'a' })

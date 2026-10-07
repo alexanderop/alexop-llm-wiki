@@ -3,9 +3,9 @@ import { join } from 'node:path'
 import { parseMarkdown } from 'comark'
 import { authorProfileSchema, compiledAuthorProfileSchema, type AuthorProfile } from '../shared/wiki.ts'
 
-export async function readAuthorProfiles(audience: string): Promise<Map<string, AuthorProfile>> {
+export async function readAuthorProfiles(): Promise<Map<string, AuthorProfile>> {
   const profiles = new Map<string, AuthorProfile>()
-  for (const folder of audience === 'personal' ? ['public', 'private'] : ['public']) {
+  for (const folder of ['public']) {
     const directory = join('content', folder, 'authors')
     const info = await lstat(directory).catch((error: NodeJS.ErrnoException) => { if (error.code !== 'ENOENT') throw error })
     if (!info) continue

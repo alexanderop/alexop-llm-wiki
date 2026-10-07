@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const noteKindSchema = z.enum(['source', 'concept', 'insight'])
-export const resourceTypes = ['blog', 'youtube', 'podcast', 'film', 'book', 'documentation', 'social', 'other'] as const
+export const resourceTypes = ['blog', 'youtube', 'podcast', 'film', 'book', 'documentation', 'repository', 'social', 'other'] as const
 export const resourceTypeSchema = z.enum(resourceTypes)
 export type ResourceType = z.infer<typeof resourceTypeSchema>
 export const relationSchema = z.object({ target: z.string(), kind: z.enum(['links', 'builds-on', 'contradicts']) })

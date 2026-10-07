@@ -6,4 +6,4 @@ Commands from this directory run the application package. Root commands also che
 - shared/ owns schemas, content/ owns authored Markdown, scripts/ owns compilation and preview.
 - Import reusable primitives through @commonplace/ui public exports, not package source paths or reka-ui directly.
 - Keep domain-specific layouts and graph rendering in the app. Keep reusable styling and accessibility behavior in packages/ui.
-- Preserve the public/private build boundary and base-path/offline behavior.
+- Use one public note collection and preserve base-path/offline behavior.

@@ -8,8 +8,7 @@
     "preview": "node scripts/serve.ts",
     "typecheck": "pnpm content && nuxt typecheck",
     "verify": "pnpm typecheck && pnpm build && node scripts/check-output.ts",
-    "content": "node scripts/compile-wiki.ts",
-    "build:personal": "WIKI_AUDIENCE=personal pnpm build"
+    "content": "node scripts/compile-wiki.ts"
   },
   "dependencies": {
     "@comark/vue": "0.7.0",

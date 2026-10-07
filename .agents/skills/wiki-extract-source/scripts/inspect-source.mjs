@@ -19,6 +19,15 @@ export function sourceIdentity(input) {
     const match = url.pathname.match(/^\/([a-zA-Z0-9_]+)\/status\/(\d+)(?:\/(?:photo|video)\/\d+)?\/?$/)
     if (match) return { key: `x:${match[2]}`, canonicalUrl: `https://x.com/${match[1]}/status/${match[2]}`, playbook: 'ingest-social' }
   }
+  if (['github.com', 'www.github.com'].includes(host)) {
+    const match = url.pathname.match(/^\/([a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)\/([a-zA-Z0-9_.-]+)\/?$/)
+    const reserved = new Set(['about', 'account', 'apps', 'codespaces', 'collections', 'contact', 'customer-stories', 'enterprise', 'events', 'explore', 'features', 'issues', 'login', 'marketplace', 'new', 'notifications', 'orgs', 'organizations', 'pricing', 'pulls', 'readme', 'search', 'security', 'sessions', 'settings', 'site', 'sponsors', 'topics', 'trending', 'users'])
+    if (match && !reserved.has(match[1].toLowerCase())) {
+      const owner = match[1].toLowerCase()
+      const repository = match[2].replace(/\.git$/i, '').toLowerCase()
+      if (repository && !['.', '..'].includes(repository)) return { key: `github:${owner}/${repository}`, canonicalUrl: `https://github.com/${owner}/${repository}`, playbook: 'ingest-repository' }
+    }
+  }
   for (const key of [...url.searchParams.keys()]) if (/^utm_/i.test(key) || ['fbclid', 'gclid'].includes(key)) url.searchParams.delete(key)
   if (!/^#[!/]/.test(url.hash)) url.hash = ''
   url.searchParams.sort()
@@ -29,17 +38,17 @@ export async function inspectSource({ root = process.cwd(), url, evidence }) {
   const identity = sourceIdentity(url)
   const { parseMarkdown } = await import(pathToFileURL(require.resolve('comark')).href)
   const matches = []
-  for (const audience of ['public', 'private']) {
+  for (const audience of ['public']) {
     const directory = resolve(root, 'apps/wiki/content', audience)
     let entries
-    try { entries = await readdir(directory, { withFileTypes: true }) } catch (error) { if (error.code === 'ENOENT' && audience === 'private') continue; throw error }
+    entries = await readdir(directory, { withFileTypes: true })
     for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
       if (entry.isSymbolicLink()) throw new Error(`Symlink not allowed: ${entry.name}`)
       if (!entry.isFile() || !entry.name.endsWith('.md')) continue
       const { frontmatter } = await parseMarkdown(await readFile(join(directory, entry.name), 'utf8'))
       if (typeof frontmatter?.sourceUrl !== 'string') continue
       if (sourceIdentity(frontmatter.sourceUrl).key === identity.key) {
-        matches.push({ noteId: frontmatter.noteId, title: frontmatter.title, audience, path: `apps/wiki/content/${audience}/${entry.name}` })
+        matches.push({ noteId: frontmatter.noteId, title: frontmatter.title, path: `apps/wiki/content/${audience}/${entry.name}` })
       }
     }
   }

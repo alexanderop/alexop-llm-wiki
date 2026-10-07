@@ -20,7 +20,7 @@ relations: []
 ---
 ```
 
-Use the current date for a real change. Omit unknown author/sourceUrl fields. Keep filenames equal to stable note IDs; do not rename an existing note from a changed source title. `resourceType` applies only to source notes. Use `social` for social posts and threads, keeping platform and handle in the source account. Use `podcast` for an episode even if its URL is YouTube, and `other` for unsupported/uncertain media. Concepts and insights have their own `kind` and cite supporting source notes.
+Use the current date for a real change. Omit unknown author/sourceUrl fields. Keep filenames equal to stable note IDs; do not rename an existing note from a changed source title. `resourceType` applies only to source notes. Use `repository` for code repositories, recording the inspected revision and paths in the body. Use `social` for social posts and threads, keeping platform and handle in the source account. Use `podcast` for an episode even if its URL is YouTube, and `other` for unsupported/uncertain media. Concepts and insights have their own `kind` and cite supporting source notes.
 
 In the body record:
 
@@ -30,7 +30,7 @@ In the body record:
 - **Connections:** explained links to existing notes, when justified.
 - **Limitations:** unavailable transcript, excerpts only, unclear attribution or conflicting evidence.
 
-These are content requirements, not mandatory identical headings for every medium. Store acquisition details in ignored raw provenance. Public notes must not contain private raw paths or private IDs. Use `[Topic](/notes/stable-id)` links. Preserve useful Comark components already supported by the renderer; do not invent new tags during ingestion.
+These are content requirements, not mandatory identical headings for every medium. Store acquisition details in ignored raw provenance. Notes must not contain local raw file paths. Use `[Topic](/notes/stable-id)` links. Preserve useful Comark components already supported by the renderer; do not invent new tags during ingestion.
 
 ### Author identity
 
@@ -39,7 +39,7 @@ resource overview. Reuse `authorId` (a lowercase hyphenated ID) across an author
 sources when supplied; this keeps links stable across display-name changes and
 separates namesakes. Optional `authorUrl` must be an evidenced HTTP(S) profile or
 website. Keep name and website consistent for an ID; never invent attribution.
-Authors and counts are derived from the selected publication audience.
+Authors and counts are derived from the collection.
 
 For multiple contributors use `contributors: [{ id, name, roles, url }]` instead
 of legacy author fields. Valid roles are `author`, `host`, `guest`, `editor`,

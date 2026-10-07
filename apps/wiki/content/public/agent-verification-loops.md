@@ -1,19 +1,19 @@
 ---
 noteId: agent-verification-loops
 title: Agent verification loops
-description: Agents can iteratively improve work when they can execute it, observe meaningful results, and act on the evidence.
+description: Give an agent a way to run its work, check what happened, and use the result to improve it.
 kind: concept
-updated: 2026-10-05
+updated: 2026-10-07
 tags: [agents, verification, feedback-loops]
 demo: false
 relations: []
 ---
 
-An agent verification loop connects a proposed change to observable evidence about its result. The agent executes the relevant behavior, inspects what happened, compares it with the intended outcome, and uses the difference to guide another change.
+An agent can make a change and still get it wrong. To improve the result, it needs a way to run the relevant behavior and see what happened. Then it can compare that result with the goal and try again.
 
-In [Lauren Tan's interview with Matt Pocock](/notes/poteto-pstack-agent-workflows), especially 00:16:14–00:24:50, this means giving coding agents access to a running application, user-like interaction, traces, and performance measurements. Tan describes verification as the capability that allowed her to stop manually relaying every result.
+That's the idea behind an agent verification loop. In [Lauren Tan's interview with Matt Pocock](/notes/poteto-pstack-agent-workflows), especially 00:16:14–00:24:50, Tan describes giving agents access to a running app, browser interactions, traces, and performance measurements. Before that, she had to pass the results back herself.
 
-The following diagram summarizes this interpretation of the verification loop:
+This diagram is a synthesis of that process:
 
 ```mermaid
 flowchart TD
@@ -27,17 +27,18 @@ flowchart TD
     check -->|Yes| record[Record result and limits]
 ```
 
-## What makes the loop useful
+## Give the agent something useful to check
 
-- The agent can observe the behavior it is changing, rather than relying only on its own explanation of the code.
-- The check addresses the intended outcome. A performance task needs relevant measurements; a user interaction needs evidence that the interaction works.
-- Repeatable setup and evidence collection can be packaged into deterministic tools so each run does not invent its own verification machinery.
-- Failed checks lead to investigation and another attempt rather than being treated as completion.
+The check needs to match the task. If the agent is trying to make something faster, it needs relevant measurements. If it's changing an interaction, it needs to try that interaction and inspect the result. An explanation of why the code should work doesn't give it the same feedback.
 
-These points are a synthesis of the interview, not a universal verification specification. The appropriate evidence depends on the task.
+Repeatable setup and evidence collection can live in scripts or tools. That way, each run can use the same process instead of building its own debugging tools again. When a check fails, the agent has a reason to investigate and make another change.
 
-## Confidence has a scope
+These are lessons drawn from the interview. The right checks still depend on the work.
 
-A passing check supports only the behavior and conditions it exercises. The interview's later discussion, at 00:55:44–00:59:26, leaves difficult questions about irreversible changes and poorly verifiable domains unresolved. Tan's reported autonomous merges should therefore be read as a description of her environment, not a general consequence of having tests.
+## A passing check has limits
 
-When repeated human corrections concern missing verification, [learning workflows from past chats](/notes/learning-agent-workflows-from-chats) provides a way to identify which step is absent and improve the process.
+A check only covers the behavior and conditions it actually tests. At 00:55:44–00:59:26, the speakers discuss irreversible changes and work that's difficult to verify. They don't arrive at a complete answer.
+
+Tan also describes agents merging changes in her environment. That doesn't establish that another project can use the same approach just because it has tests.
+
+If you keep telling an agent to check its work, look at what's missing. [Past chats can help reveal that pattern](/notes/learning-agent-workflows-from-chats). The useful change may be giving the agent access to the result it needs to inspect.

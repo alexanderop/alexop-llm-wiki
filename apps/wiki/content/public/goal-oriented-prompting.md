@@ -1,7 +1,7 @@
 ---
 noteId: goal-oriented-prompting
 title: Goal-oriented prompting
-description: Frame an agent task around an intended outcome, an effort budget, and observable checks while preserving necessary constraints.
+description: Tell an agent what a good result looks like, how much effort to spend, and how to check its work.
 kind: concept
 updated: 2026-10-07
 tags: [prompting, agents, verification, effort]
@@ -9,26 +9,28 @@ demo: false
 relations: []
 ---
 
-Goal-oriented prompting describes what a successful result should accomplish and lets the agent choose suitable steps within stated constraints. This note synthesizes two screenshot-backed Boris Cherny posts; it is a practical interpretation, not an experimentally established rule for every model or task.
+When you give an agent a task, start with what you want to get back. Explain what a good result looks like, then give it room to choose the steps within your constraints.
 
-## A delegation brief
+That's the idea behind goal-oriented prompting. This note draws on two Boris Cherny posts captured in screenshots. It's a practical interpretation of his advice, not a rule proven to work for every model or task.
 
-[Cherny's prompting advice](/notes/boris-cherny-goals-effort-verification) emphasizes three questions:
+## What does the agent need to know?
 
-1. **Outcome:** What should the agent deliver, and for whom?
-2. **Effort:** How much investigation, iteration, or time is appropriate?
-3. **Verification:** What observable evidence would show that the result meets the goal?
+[Cherny's prompting advice](/notes/boris-cherny-goals-effort-verification) comes down to three questions:
 
-Necessary constraints still belong in the brief: scope, compatibility, privacy, and actions requiring human approval. Flexibility about implementation does not remove these boundaries. This qualification is our synthesis, not a further claim from the post.
+1. **What should it deliver?** Describe the result and who it's for.
+2. **How much effort should it spend?** Make clear how much investigation or iteration the task deserves.
+3. **How should it check the work?** Describe what would show that the result meets the goal.
 
-## An example and its limit
+Scope, compatibility, privacy, and actions that need human approval still belong in the prompt when they matter. Letting an agent choose its approach doesn't remove those limits. This is an added qualification in this note, not another claim from Cherny's post.
 
-The [Home Depot artifact prompt](/notes/boris-cherny-home-depot-prompt) requests an interactive explanation of an episode's business lessons, gives visual references, and encourages substantial iteration. It illustrates outcome, quality, and effort language in a concrete request.
+## What that looks like in a prompt
 
-Its visible text does not define a concrete verification method. A request to iterate until the result feels good is different from checking evidence, readability, or working interactions. The finished artifact was not available for evaluation, so the source cannot establish the prompt's effectiveness.
+The [Home Depot example](/notes/boris-cherny-home-depot-prompt) asks for an interactive explanation of an episode's business lessons. It names visual references and encourages the agent to keep iterating. You can see the intended result, the desired style, and the effort expectation.
 
-## Connecting prompting to execution
+The verification step is less clear. Asking an agent to keep going until it likes the result doesn't specify how to check facts, readability, or interactions. And because the finished artifact wasn't available, this example doesn't establish how well the prompt worked.
 
-[Agent verification loops](/notes/agent-verification-loops) supplies the operational complement: execute the relevant behavior, observe it, compare it with the goal, and revise. The prompt establishes the checks; the environment must make the evidence available.
+## The prompt is one part of the process
 
-[Learning agent workflows from past chats](/notes/learning-agent-workflows-from-chats) addresses what to do when the same missing context or correction recurs. These approaches can complement each other: a concise task brief can rely on reusable tools or workflow guidance developed from observed failures. Neither source establishes that all scaffolding is unnecessary.
+An agent also needs access to the evidence you're asking it to check. [Agent verification loops](/notes/agent-verification-loops) explains how it can run the work, inspect the result, and use that feedback for another attempt.
+
+If the same context is missing or you keep making the same correction, [past chats can help improve the workflow](/notes/learning-agent-workflows-from-chats). A short task brief can work alongside reusable tools and guidance built from those problems. These sources don't establish that agents no longer need that support.

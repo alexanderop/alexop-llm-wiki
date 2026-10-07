@@ -1,6 +1,6 @@
 # Public wiki activity
 
-Append public ingestion, saved-query and maintenance changes here. Log private activity only in ignored `raw/wiki-log.md`; never put private titles, IDs or source URLs in this tracked file.
+Append ingestion, saved-query and maintenance changes here. Keep raw acquisition records in ignored `raw/`.
 
 ## 2026-10-05
 
@@ -14,5 +14,19 @@ Append public ingestion, saved-query and maintenance changes here. Log private a
 
 ## 2026-10-07
 
+- Rewrote the six existing public notes in Alex's conversational style: `agent-verification-loops`, `learning-agent-workflows-from-chats`, `goal-oriented-prompting`, `poteto-pstack-agent-workflows`, `boris-cherny-goals-effort-verification`, and `boris-cherny-home-depot-prompt`. Simplified descriptions and explanations while retaining source attribution, quotations, timestamp ranges, links, the verification diagram, and evidence limitations.
+
+- Added shared wiki writing guidance based on Alex's selected Tacon and How I Use LLMs posts. Connected it to the wiki workflow and repository instructions; retained source attribution and limits on first-person claims.
+
 - Added Social posts as a source category, with X / Tweet labels, source-URL search, and canonical X/Twitter status identity for duplicate detection. Updated capture guidance for screenshots and social threads.
 - At the user's explicit request, added public sources `boris-cherny-goals-effort-verification` and `boris-cherny-home-depot-prompt`, the `goal-oriented-prompting` concept, and a Boris Cherny author profile. Connected the posts to existing verification and workflow knowledge. Evidence is screenshot-only; URL/image pairing follows supplied order, and X retrieval was blocked. Public summaries preserve that limitation; original screenshots and transcription remain in ignored raw evidence. No portrait retrieved; initials remain available.
+
+- Added Repositories as a source category, a repository capture playbook, and GitHub root URL normalization for duplicate discovery. Repository notes retain review dates, revisions, inspected paths and execution limits in their source account.
+
+## 2026-10-07
+
+- Simplified the wiki to one public professional knowledge collection at the owner’s request. Removed personal builds and private-note workflows; retained original evidence in ignored `raw/`.
+- Moved `claude-plugins-community` and its Anthropic author profile into the single collection without changing their content.
+- Added the missing avatars for Boris Cherny and Anthropic from their X profile images. Retrieved profile metadata through FxTwitter because direct X access returned 403, confirmed profile names and linked websites, and saved the images locally with original image URLs. Added Anthropic's X link; retained Lauren Tan's and Matt Pocock's existing portraits. Acquisition records stay in ignored `raw/author-avatars-2026-10-07/`.
+- Updated the shared author-profile workflow and wiki routing: check every source contributor, create missing profiles, and try confirmed X avatars before other profiles or official websites. Documented third-party metadata provenance, local image checks, preservation of existing avatars and honest missing-image fallbacks.
+- Captured `armin-ronacher-what-is-codemode` from the complete October 6 article and connected it to `learning-agent-workflows-from-chats`, marking the connection as agent synthesis. Added Armin Ronacher's evidenced author profile and inspected local X portrait, retrieved through FxTwitter metadata. Code examples were read but not executed; the embedded game video was not reviewed. Original HTML and acquisition records remain in ignored `raw/`. No commit or publication requested.

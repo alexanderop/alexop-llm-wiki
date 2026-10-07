@@ -1,32 +1,34 @@
 ---
 noteId: learning-agent-workflows-from-chats
 title: Learning agent workflows from past chats
-description: Use repeated interventions in real agent conversations to identify reusable skills, deterministic tools, and enforceable rules.
+description: Look at repeated corrections in agent chats to find missing context, useful tools, and workflows worth keeping.
 kind: concept
-updated: 2026-10-05
+updated: 2026-10-07
 tags: [agents, skills, developer-workflows]
 demo: false
 relations: []
 ---
 
-Past agent conversations record how work actually unfolded: what context was missing, where a person intervened, and which instructions had to be repeated. That makes them evidence for improving a workflow rather than merely a history of completed tasks.
+If you keep making the same correction in agent chats, there's something worth looking at. The conversation shows where the agent got stuck, what it didn't know, and what you had to explain again.
 
-The direct source is [Lauren Tan's interview with Matt Pocock](/notes/poteto-pstack-agent-workflows), particularly 01:00:35–01:04:42. The supplied bookmark at 01:00:53 points into this discussion. Tan recommends extracting recurring corrections into skills or lint rules and describes using earlier chats to recover context for related debugging work.
+In [Lauren Tan's interview with Matt Pocock](/notes/poteto-pstack-agent-workflows), especially 01:00:35–01:04:42, Tan recommends using those repeated interventions to improve skills or lint rules. She also describes returning to older chats to recover context for related debugging work. The supplied bookmark at 01:00:53 points into this discussion.
 
-## A practical interpretation
+## Turn a repeated correction into a useful change
 
-The following is a suggested application of the source, not a verbatim procedure:
+The following is a suggested way to apply the idea, not a procedure quoted from the interview:
 
-1. Find several interventions concerning the same problem and inspect the surrounding context.
-2. Identify what was missing: information, a repeatable operation, a checkable constraint, or judgment about the next step.
-3. Choose a suitable mechanism. Supply missing context; script mechanical work; enforce a structural constraint with a check; describe a judgment-dependent workflow in a skill.
-4. Try the change on later work and check whether the original problem recurs.
-5. Keep exceptions explicit and revise rules that do not generalize.
+1. Find several corrections about the same problem. Read the surrounding conversation so you understand why they were needed.
+2. Work out what was missing. Was it context, a repeatable operation, a rule the agent could check, or help deciding what to do next?
+3. Choose a way to address it. Supply the context, write a script for mechanical work, add a check for a structural rule, or describe the workflow in a skill.
+4. Try the change on later work. Does the same problem still happen?
+5. Keep exceptions visible and revise rules that don't work outside the original task.
 
-The distinction between scripts and judgment comes from the interview's earlier 00:19:39–00:24:50 discussion. Connecting it to transcript mining helps avoid turning every repeated command into more prose instructions.
+The interview's earlier discussion at 00:19:39–00:24:50 helps with the third step. Tan describes moving repeatable operations into tools and leaving the agent to make decisions where judgment is needed. Applied to chat history, that suggests you don't need to turn every repeated command into another written instruction.
 
-## Limits
+## Check whether the lesson still applies
 
-One correction may be local to a task. A historical workaround may be stale. The interview does not provide controlled evidence that transcript-derived skills improve outcomes across projects; this is a practitioner method to evaluate in context.
+An implementation question follows from the third step: how should those tools work together? [Armin Ronacher's Codemode article](/notes/armin-ronacher-what-is-codemode) provides a concrete example. As an agent synthesis, the connection is between discovering a useful workflow in chats and giving the agent a way to compose its operations. Neither step establishes that the resulting workflow works; it still needs the fourth step's check.
 
-If conversations repeatedly show a human acting as the only observer of application behavior, the missing capability may be an [agent verification loop](/notes/agent-verification-loops). In that case, improving access to evidence can address the underlying dependency more directly than adding reminders to verify.
+One correction might belong to one task. An old workaround might no longer be needed. The interview describes a method from practice; it doesn't provide controlled evidence that skills extracted from chats improve results across projects.
+
+For example, you might notice that a person always has to run the app and tell the agent what happened. The missing piece could be an [agent verification loop](/notes/agent-verification-loops). Giving the agent access to that evidence may help more than repeatedly telling it to verify its work.

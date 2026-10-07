@@ -12,7 +12,9 @@ node .agents/skills/wiki-extract-source/scripts/inspect-source.mjs --url 'https:
 node .agents/skills/wiki-extract-source/scripts/inspect-source.mjs --url 'https://youtu.be/VIDEO_ID' --evidence raw/video/transcript.txt
 ```
 
-The helper reads authored public and private Markdown, normalizes known URL variants and reports duplicate candidates plus evidence availability. It writes nothing, fetches nothing, and does not validate the truth or completeness of evidence. Its output may contain private note IDs; do not save that output in tracked files.
+The helper reads authored Markdown, normalizes known URL variants and reports duplicate candidates plus evidence availability. It writes nothing, fetches nothing, and does not validate the truth or completeness of evidence.
+
+GitHub repository roots route to the [repository playbook](../wiki/playbooks/ingest-repository.md). Case, `.git`, trailing slash, query and fragment variants share an identity. Deep links such as issues and files remain distinct sources. Other repository hosts require manual medium and identity inspection.
 
 Recognized X/Twitter status URLs route to the [social-post playbook](../wiki/playbooks/ingest-social.md) and share an identity across host aliases and photo/video suffixes. For other platforms, inspect the actual medium and choose that playbook when the source is a social post; the generic URL fallback is not authoritative medium detection.
 

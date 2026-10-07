@@ -13,8 +13,6 @@ playwright-report
 .env.*
 !.env.example
 .DS_Store
-apps/wiki/content/private/*
-!apps/wiki/content/private/.gitkeep
 raw/*
 !raw/README.md
 

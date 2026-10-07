@@ -57,7 +57,7 @@ Open http://127.0.0.1:4173. Wait for “Offline verfügbar” before disconnecti
 
 ## Add a note
 
-Create a Markdown file directly inside `apps/wiki/content/public/` or `apps/wiki/content/private/`. A public file needs this frontmatter:
+Create a Markdown file directly inside `apps/wiki/content/public/`. A public file needs this frontmatter:
 
 ```yaml
 ---
@@ -82,7 +82,6 @@ Run `pnpm content` after changing notes. Restart `pnpm dev` or rebuild to load t
 ```sh
 pnpm content:reset                       # preview public content removal
 pnpm content:reset --yes                 # delete all public content
-pnpm content:reset --include-private --yes # delete public AND private content
 ```
 
 This removes all files in the selected content directories except `.gitkeep`,
@@ -93,11 +92,11 @@ Stop the running server first; restart with `pnpm dev` or rebuild with
 `pnpm build`. Browser offline copies remain until the site updates or its stored
 data is cleared. The command does not commit, push or delete a deployed site.
 
-## Keep private notes private
+## One public knowledge collection
 
-The default build reads only `apps/wiki/content/public`. `pnpm build:personal` includes `apps/wiki/content/private` too. That command replaces `apps/wiki/.output/public` with a personal edition. Never publish a personal build. Serve personal and public editions on different origins. Sharing a localhost link does not publish a page.
+All notes live in `apps/wiki/content/public`. Capture professional sources, concepts and insights here; there is no separate private edition. `pnpm build` includes the complete collection.
 
-`pnpm verify` builds the public edition and scans all output files for the private test marker. CI copies a synthetic canary from `tests/fixtures/private-note.md` into the ignored private directory before building. Private notes and files in `raw/` are ignored by Git by default. Keep separate backups: ignored files are not saved in Git.
+Original source files and acquisition records stay in ignored `raw/` and need separate backups. Note changes go in `docs/wiki-log.md`. Saving notes does not automatically commit, push or deploy them.
 
 ## Publish a static edition
 
@@ -116,7 +115,7 @@ deployment checkout. No API keys or extra deployment secrets are needed.
 
 The reference site is https://alexanderop.github.io/commonplace-wiki/.
 Update this link after creating your own template repository. Private content,
-raw files and personal builds are never uploaded by the deployment job.
+raw files are never uploaded by the deployment job.
 
 ## Verify behavior
 
@@ -135,11 +134,11 @@ The twelve public notes are examples, not a record of talks you watched. V1 is a
 
 ## Work with a coding agent
 
-The entrypoint is [.agents/skills/wiki/SKILL.md](.agents/skills/wiki/SKILL.md). Ask your repository-aware agent: “Use the wiki skill to capture this YouTube URL privately,” “Read raw/my-talk.md and connect it to existing topics,” or “What do my notes say about dependency injection?” Agents with project skill discovery can select `wiki`; otherwise ask them to read that exact entrypoint. No global plugin or hook is installed.
+The entrypoint is [.agents/skills/wiki/SKILL.md](.agents/skills/wiki/SKILL.md). Ask your repository-aware agent: “Use the wiki skill to capture this YouTube URL,” “Read raw/my-talk.md and connect it to existing topics,” or “What do my notes say about dependency injection?” Agents with project skill discovery can select `wiki`; otherwise ask them to read that exact entrypoint. No global plugin or hook is installed.
 
-The router selects YouTube, article, podcast, book, film, question or maintenance playbooks. Shared principles govern evidence, note reuse, meaningful connections and private-by-default capture. Source inspection reads authored Markdown and detects known duplicate URL variants; transcript acquisition uses available tools and reports missing evidence honestly.
+The router selects YouTube, article, podcast, book, film, question or maintenance playbooks. Shared principles govern evidence, note reuse, meaningful connections and public-by-default capture. Source inspection reads authored Markdown and detects known duplicate URL variants; transcript acquisition uses available tools and reports missing evidence honestly.
 
-Private notes and private activity (`raw/wiki-log.md`) stay ignored; only public changes go in `docs/wiki-log.md`. Review private files directly as well as the Git diff. Capturing a source does not authorize publication, commit or push. See [agent workflows and evaluation cases](docs/agent-workflows.md) for capabilities and limits.
+Raw evidence stays ignored; note changes go in `docs/wiki-log.md`. Review the Git diff. Capturing a source does not authorize deployment, commit or push. See [agent workflows and evaluation cases](docs/agent-workflows.md) for capabilities and limits.
 
 Source notes may supply `sourceUrl` and `author`; the article renders an original-source link. To prepare a public edition, explicitly select the notes for `apps/wiki/content/public` and resolve their links before building.
 
@@ -182,7 +181,7 @@ when attribution is unknown. Organizations can also be credited as authors.
 
 `/authors` lists authors; `/authors/<id>` groups their source notes. These pages,
 resource counts, search and offline output are derived only from the selected
-publication audience. No separate author index needs to be maintained.
+collection. No separate author index needs to be maintained.
 
 ### Multiple contributors
 
@@ -214,9 +213,9 @@ are not part of the template's authored content.
 
 ## Author profiles
 
-Source capture researches missing contributors through official biographies and confirmed professional profiles. Store reusable profile frontmatter in `apps/wiki/content/public/authors/<id>.md` (or the private equivalent). Profiles contain a short `bio`, `url`, `links`, evidence `sources`, and `updated` date. The ID and name match source credits; roles remain specific to each source. Missing profiles still render names and initials.
+Source capture researches missing contributors through official biographies and confirmed professional profiles. Store reusable profile frontmatter in `apps/wiki/content/public/authors/<id>.md`. Profiles contain a short `bio`, `url`, `links`, evidence `sources`, and `updated` date. The ID and name match source credits; roles remain specific to each source. Missing profiles still render names and initials.
 
-Optional portraits live beside the profile, referenced by `avatar` and attributed with `avatarSource`. PNG, JPG and WebP files under 100 KB are embedded in compiled content for offline use and audience isolation. Profiles without published resources are not included in the public catalog. The capture workflow is documented in `.agents/skills/wiki/references/author-profiles.md`.
+Optional portraits live beside the profile, referenced by `avatar` and attributed with `avatarSource`. PNG, JPG and WebP files under 100 KB are embedded in compiled content for offline use. Profiles without published resources are not included in the public catalog. The capture workflow is documented in `.agents/skills/wiki/references/author-profiles.md`.
 
 The library author filter combines with note-kind and resource-type filters, persists in the `author` query parameter, and links to each contributor's resource page. Concepts and insights are not attributed to the authors of their cited sources.
 

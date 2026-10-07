@@ -1,7 +1,7 @@
 ---
 noteId: boris-cherny-home-depot-prompt
 title: Boris Cherny's Home Depot prompt — outcome, quality, and effort
-description: A screenshot of an artifact request illustrates how to describe an outcome, visual direction, and an iteration budget in ordinary language.
+description: Cherny's Home Depot prompt shows how to describe the result, visual style, and effort you want from an agent.
 kind: source
 resourceType: social
 sourceUrl: https://x.com/bcherny/status/2107532985897771152
@@ -14,26 +14,28 @@ demo: false
 relations: []
 ---
 
-## Source and coverage
+Boris Cherny's Home Depot prompt is specific about what he wants to get back: an interactive artifact explaining the business lessons from Acquired's Home Depot episode.
 
-An X / Twitter post attributed to **Boris Cherny (@bcherny)**, with the caption “Prompt” and an attached Claude conversation screenshot. The supplied image displays **6 October 2026** as the post date. Inspected on 7 October 2026; direct retrieval of the [supplied original URL](https://x.com/bcherny/status/2107532985897771152) was blocked. The URL-to-screenshot association follows the supplied order and was not independently verified.
-
-The embedded prompt is readable. Only part of the response is visible; the finished artifact, full conversation, replies, and Acquired episode were not inspected.
-
-## What the visible prompt asks for
-
-The prompt requests an interactive artifact narrating Acquired's Home Depot episode, emphasizing business lessons. It supplies visual direction through watercolor illustrations, historical photographs, and references to New Yorker and New York Times data visualization. It also suggests OpenCV for watercolor images; that is part of the source's request, not a technical recommendation verified here.
-
-Its explicit effort instruction is:
+He also describes how it should feel. He asks for watercolor illustrations, historical photographs, and a style inspired by New Yorker and New York Times data visualization. Then he gives the agent room to keep working:
 
 > use lots of tokens and iterate till you’re proud of it
 
-The visible response begins by proposing research and an illustrated interactive companion piece. That establishes the proposed next step, not successful execution or the accuracy of any resulting artifact.
+The prompt also suggests OpenCV for watercolor images. That's a suggestion in the source, not a technical recommendation checked for this note.
 
-## Interpretation and connections
+## A clear direction, but an open question about checking it
 
-The example makes three things concrete: the desired deliverable, qualitative expectations, and permission to spend effort iterating. It is an application of [Goal-oriented prompting](/notes/goal-oriented-prompting).
+As an example of [Goal-oriented prompting](/notes/goal-oriented-prompting), the request gives the agent a deliverable, a visual direction, and permission to spend effort. This is an interpretation of the prompt, not evidence that it produced a good artifact.
 
-Compared with Cherny's [goals, effort, and verification advice](/notes/boris-cherny-goals-effort-verification), the visible prompt is less specific about verification. Pride in the result is subjective; it does not identify a factual or functional acceptance check.
+The visible response says the agent will research the episode and build an illustrated interactive companion. That shows what it plans to do. The finished result isn't available here.
 
-A possible extension, not present in the source, would be to check episode claims against evidence and exercise the artifact's interactions. [Agent verification loops](/notes/agent-verification-loops) explains why those observable checks give iteration useful feedback.
+Compared with Cherny's [advice about goals, effort, and verification](/notes/boris-cherny-goals-effort-verification), this prompt says less about checking the work. Being proud of a result is subjective. It doesn't tell the agent how to check the facts or whether the interactions work.
+
+A possible addition would be to check claims against the episode and try the artifact's interactions. That addition isn't in the source. It's an application of [Agent verification loops](/notes/agent-verification-loops): give iteration feedback that the agent can act on.
+
+## What was available
+
+The supplied screenshot shows an X / Twitter post attributed to **Boris Cherny (@bcherny)**, captioned “Prompt”, with an attached Claude conversation. It displays **6 October 2026** as the post date and was inspected on 7 October 2026.
+
+The prompt is readable, but only part of the response is visible. The finished artifact, full conversation, replies, and Acquired episode weren't inspected.
+
+Retrieval of the [supplied original URL](https://x.com/bcherny/status/2107532985897771152) was blocked. The screenshot was matched to the URL using the supplied order; that match hasn't been independently verified.

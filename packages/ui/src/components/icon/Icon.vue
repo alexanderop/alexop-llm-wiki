@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ name: 'video' | 'microphone' | 'book' | 'article' | 'film' | 'documentation' | 'link' | 'message' }>()
+defineProps<{ name: 'video' | 'microphone' | 'book' | 'article' | 'film' | 'documentation' | 'link' | 'message' | 'repository' }>()
 </script>
 <template>
   <svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -9,6 +9,7 @@ defineProps<{ name: 'video' | 'microphone' | 'book' | 'article' | 'film' | 'docu
     <template v-else-if="name === 'article'"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 7h8M8 11h8M8 15h5M8 18h8" /></template>
     <template v-else-if="name === 'film'"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4M7 12h10" /></template>
     <template v-else-if="name === 'documentation'"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M9 12l-2 3 2 3M15 12l2 3-2 3" /></template>
+    <template v-else-if="name === 'repository'"><circle cx="6" cy="5" r="3" /><circle cx="6" cy="19" r="3" /><circle cx="18" cy="5" r="3" /><path d="M6 8v8M18 8v2a9 9 0 0 1-9 9" /></template>
     <template v-else-if="name === 'message'"><path d="M21 11a8 8 0 0 1-8 8H6l-4 3V11a8 8 0 0 1 8-8h3a8 8 0 0 1 8 8Z" /><path d="M7 9h9M7 13h6" /></template>
     <template v-else><path d="m10 13 4-4M8 16l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M16 8l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" transform="translate(0 -1)" /></template>
   </svg>

@@ -6,7 +6,7 @@ export default defineContentConfig({
   collections: {
     notes: defineCollection({
       type: 'data',
-      source: { cwd: resolve('.generated', process.env.WIKI_AUDIENCE ?? 'public'), include: '*.json' },
+      source: { cwd: resolve('.generated', 'public'), include: '*.json' },
       schema: compiledNoteSchema,
     }),
   },
