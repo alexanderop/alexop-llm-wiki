@@ -15,6 +15,10 @@ export function sourceIdentity(input) {
     const id = host.endsWith('youtu.be') ? parts[0] : parts[0] === 'watch' ? url.searchParams.get('v') : ['shorts', 'embed', 'live'].includes(parts[0]) ? parts[1] : undefined
     if (id && /^[a-zA-Z0-9_-]{11}$/.test(id)) return { key: `youtube:${id}`, canonicalUrl: `https://www.youtube.com/watch?v=${id}`, playbook: 'ingest-youtube' }
   }
+  if (['x.com', 'www.x.com', 'twitter.com', 'www.twitter.com', 'mobile.twitter.com'].includes(host)) {
+    const match = url.pathname.match(/^\/([a-zA-Z0-9_]+)\/status\/(\d+)(?:\/(?:photo|video)\/\d+)?\/?$/)
+    if (match) return { key: `x:${match[2]}`, canonicalUrl: `https://x.com/${match[1]}/status/${match[2]}`, playbook: 'ingest-social' }
+  }
   for (const key of [...url.searchParams.keys()]) if (/^utm_/i.test(key) || ['fbclid', 'gclid'].includes(key)) url.searchParams.delete(key)
   if (!/^#[!/]/.test(url.hash)) url.hash = ''
   url.searchParams.sort()

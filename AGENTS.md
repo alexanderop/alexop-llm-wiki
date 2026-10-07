@@ -30,7 +30,7 @@ When the user asks to ingest a source:
 
 For questions, search the Markdown catalog and answer with note/source references. Save an answer as an insight when requested. For maintenance, inspect orphan notes, broken references, duplicate topics, stale claims and contradictions; distinguish mechanical link errors from claims requiring new evidence. The app derives its catalog and backlinks, so there is no second hand-maintained index.
 
-For source notes, assign `resourceType`: `blog`, `youtube`, `podcast`, `film`, `book`, `documentation` or `other`. Classify the actual source medium, not the topic being discussed. Use `other` when unknown. Do not assign a resource type to concepts or insights. Keep the source URL and author when available; do not invent examples to fill empty resource categories.
+For source notes, assign `resourceType`: `blog`, `youtube`, `podcast`, `film`, `book`, `documentation`, `social` or `other`. Classify the actual source medium, not the topic being discussed. Use `other` when unknown. Do not assign a resource type to concepts or insights. Keep the source URL and author when available; do not invent examples to fill empty resource categories.
 
 ## Page quality gates
 

@@ -19,3 +19,12 @@ Feature: Wiki agent source and publication helpers
   Scenario: Reject public references to private knowledge
     Given an isolated wiki with an existing private video source
     Then a public note referencing that private source fails public compilation
+
+  @wiki-agent
+  Scenario: Private profiles never enrich public output
+    Given an isolated wiki with an existing private video source
+    Then profile enrichment respects the publication audience
+
+  Scenario: Recognize the same social post across X and Twitter URLs
+    Given an isolated wiki with an existing private video source
+    Then alternate social URLs identify the existing post without merging different posts

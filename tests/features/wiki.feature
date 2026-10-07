@@ -23,7 +23,7 @@ Feature: A connected offline knowledge library
   Scenario: Explore the graph
     Given I open the knowledge graph
     Then I see the interactive graph
-    When I filter the graph to "Themen"
+    When I filter the graph to "Topics"
     Then the graph list contains only topics
     When I open a note from the graph list
     Then I see an article
@@ -64,25 +64,14 @@ Feature: A connected offline knowledge library
     And I reload the page
     Then the dark design is active
 
-  Scenario: Change the interface language without translating notes
-    Given I open the knowledge library
-    When I choose English
-    Then the interface is English
-    When I open the note "Dependency Injection"
-    Then the article interface is English and the note stays German
-    When I reload the page
-    Then the article interface is English and the note stays German
-    When I choose German
-    Then the article interface is German
-
   Scenario: Browse sources by resource type
     Given I open the knowledge library
-    When I filter resources to "Dokumentation"
+    When I filter resources to "Documentation"
     Then I see three documentation resources
     When I open the note "Comark: Komponenten im Text"
     Then the article identifies a documentation resource
     Given I open the knowledge library
-    When I filter resources to "YouTube-Video"
+    When I filter resources to "YouTube video"
     Then I see an empty resource category
     When I show all resources
     Then I see four source resources

@@ -3,7 +3,7 @@ import { contributorsFor, type Note, type NoteKind } from '#shared/wiki'
 export interface GraphNode { id: string; title: string; kind: NoteKind; size: number }
 export interface GraphEdge { source: string; target: string }
 export interface KnowledgeGraph { nodes: GraphNode[]; links: GraphEdge[] }
-const normalize = (text: string) => text.toLocaleLowerCase('de').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const normalize = (text: string) => text.toLocaleLowerCase('en').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
 export function createKnowledge(notes: readonly Note[]) {
   const byId = new Map(notes.map(note => [note.noteId, note]))
@@ -14,7 +14,8 @@ export function createKnowledge(notes: readonly Note[]) {
   const authors = [...new Set(credits.map(({ credit }) => credit.id))].map(id => {
     const entries = credits.filter(({ credit }) => credit.id === id)
     const resources = entries.map(({ note }) => note).sort((a, b) => b.updated.localeCompare(a.updated) || a.title.localeCompare(b.title))
-    return { id, name: entries[0]!.credit.name, url: entries.find(({ credit }) => credit.url)?.credit.url, resources }
+    const profile = entries.flatMap(({ note }) => note.authorProfiles).find(profile => profile.id === id)
+    return { id, name: entries[0]!.credit.name, url: profile?.url ?? entries.find(({ credit }) => credit.url)?.credit.url, profile, resources }
   }).sort((a, b) => a.name.localeCompare(b.name))
   return {
     notes,
@@ -29,7 +30,7 @@ export function createKnowledge(notes: readonly Note[]) {
       return notes.map(note => {
         const title = normalize(note.title)
         const tags = normalize(note.tags.join(' '))
-        const text = normalize(`${contributorsFor(note).map(credit => credit.name).join(' ')} ${note.description} ${note.searchText}`)
+        const text = normalize(`${contributorsFor(note).map(credit => credit.name).join(' ')} ${note.sourceUrl ?? ''} ${note.description} ${note.searchText}`)
         const score = terms.every(term => `${title} ${tags} ${text}`.includes(term))
           ? terms.reduce((total, term) => total + (title.includes(term) ? 12 : 0) + (tags.includes(term) ? 6 : 0) + (text.includes(term) ? 1 : 0), 0) : 0
         return { note, score }

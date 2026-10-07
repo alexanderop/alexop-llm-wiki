@@ -13,6 +13,7 @@ Work from the repository root. This skill operates on authored Markdown; the Nux
 | --- | --- |
 | Save a YouTube video or talk | [YouTube](playbooks/ingest-youtube.md) |
 | Save an article, documentation page or PDF | [Article](playbooks/ingest-article.md) |
+| Save a tweet, social post or thread | [Social post](playbooks/ingest-social.md) |
 | Save a podcast episode, including one hosted on YouTube | [Podcast](playbooks/ingest-podcast.md) |
 | Save a book or reading notes | [Book](playbooks/ingest-book.md) |
 | Save a film or viewing notes | [Film](playbooks/ingest-film.md) |
@@ -24,6 +25,8 @@ A URL in an explicit capture request routes automatically. A URL supplied for di
 ## Shared decisions
 
 Before processing a source, read [evidence first](../principle-evidence-first/SKILL.md), [reuse existing knowledge](../principle-reuse-existing-knowledge/SKILL.md), [explain connections](../principle-explain-connections/SKILL.md), and [private by default](../principle-private-by-default/SKILL.md). These are the canonical rules; playbooks specialize the work rather than restating them.
+
+For every source capture, use [author discovery and profiles](references/author-profiles.md) to research missing contributor identities, bios, portraits and social links. Reuse existing profiles and preserve the publication boundary.
 
 Use [source extraction](../wiki-extract-source/SKILL.md) to inspect input, [connection discovery](../wiki-connect-notes/SKILL.md) to integrate it, and [validation](../wiki-validate/SKILL.md) before reporting saved changes. Read the [note contract](references/note-contract.md) when writing Markdown. Load only the chosen playbook and relevant supporting resources.
 

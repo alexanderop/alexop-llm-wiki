@@ -2,10 +2,12 @@ import { readdir, readFile, mkdir, writeFile, rm, rename } from 'node:fs/promise
 import { resolve, join } from 'node:path'
 import { parseMarkdown, type Node } from 'comark'
 import toc from 'comark/plugins/toc'
+import { readAuthorProfiles } from './author-profiles.ts'
 import { contributorsFor, compiledNoteSchema, noteMetadataSchema, type Note, type Relation } from '../shared/wiki.ts'
 
 const audience = process.env.WIKI_AUDIENCE ?? 'public'
 if (!['public', 'personal'].includes(audience)) throw new Error('WIKI_AUDIENCE must be public or personal')
+const profiles = await readAuthorProfiles(audience)
 const allowedTags = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'strong', 'em', 'del', 'code', 'pre', 'blockquote', 'ul', 'ol', 'li', 'hr', 'br', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'insight', 'source-reference'])
 const notes: Note[] = []
 for (const folder of audience === 'personal' ? ['public', 'private'] : ['public']) {
@@ -57,6 +59,9 @@ for (const note of notes) {
   for (const credit of contributorsFor(note)) {
     if (seen.has(credit.id)) throw new Error(`${note.noteId}: duplicate contributor ${credit.id}; combine roles in one entry`)
     seen.add(credit.id)
+    const profile = profiles.get(credit.id)
+    if (profile && (profile.name !== credit.name || profile.url && credit.url && profile.url !== credit.url)) throw new Error(`Conflicting author profile: ${credit.id}`)
+    if (profile) note.authorProfiles.push(profile)
     const previous = authors.get(credit.id)
     if (previous && (previous.name !== credit.name || previous.url && credit.url && previous.url !== credit.url)) throw new Error(`${note.noteId}: conflicting contributor identity ${credit.id}; use consistent metadata or distinct ids`)
     authors.set(credit.id, { name: credit.name, url: credit.url ?? previous?.url })

@@ -15,7 +15,7 @@ async function findPages(directory) {
 }
 const routes = await findPages(root)
 if (!routes.includes('.')) throw new Error('Build the wiki before generating page audits')
-const profiles = ['fresh-desktop', 'en-dark-desktop', 'de-light-desktop', 'en-light-mobile', 'de-dark-mobile']
+const profiles = ['fresh-desktop', 'en-dark-desktop', 'en-light-desktop', 'en-light-mobile', 'en-dark-mobile']
 const rows = routes.flatMap(route => profiles.map(profile => `      | ${route === '.' ? './' : `./${route}/`} | ${profile} |`))
 await mkdir('.generated-tests', { recursive: true })
 await writeFile('.generated-tests/pages.feature', `# Generated from production HTML; do not edit.

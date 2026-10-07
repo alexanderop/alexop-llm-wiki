@@ -7,3 +7,5 @@
 5. Follow [validation](../../wiki-validate/SKILL.md). Report what was read and what was not, alongside the changed note IDs.
 
 Completion is a supported, reusable source note integrated into the existing collection. A mirrored URL or renamed article is a duplicate candidate, not automatic proof that it is a different source.
+
+For tweets, social posts and threads, use the [social-post playbook](ingest-social.md).

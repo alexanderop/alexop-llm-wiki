@@ -17,10 +17,10 @@ A personal knowledge wiki with Markdown in Git, Nuxt Content collections, Comark
 1. Use the template button and clone your new repository.
 2. Install dependencies and start the app with `pnpm install` and `pnpm dev`.
 3. Replace the examples in `apps/wiki/content/public/` with your own Markdown. Keep links consistent; compilation rejects missing targets. An empty public collection also builds.
-4. Adjust UI text and the default language in `apps/wiki/app/i18n/`, theme tokens in `packages/ui/src/styles/tokens.css`, and the app name/icons in `apps/wiki/nuxt.config.ts`, `WikiShell.vue` and `apps/wiki/public/`.
+4. Adjust English UI text in `apps/wiki/app/i18n/`, theme tokens in `packages/ui/src/styles/tokens.css`, and the app name/icons in `apps/wiki/nuxt.config.ts`, `WikiShell.vue` and `apps/wiki/public/`.
 5. Update the repository links in this README, then run `pnpm verify` and `pnpm test:compat` before publishing.
 
-The starter uses German and dark mode by default; English and light mode are available in the header. All included notes are examples. No API key or hosted database is required.
+The wiki uses English only and dark mode by default; the header toggles light mode. All included notes are examples. No API key or hosted database is required.
 
 ## Workspace
 
@@ -125,7 +125,7 @@ pnpm exec playwright install chromium firefox
 pnpm test:compat
 ```
 
-The default Gherkin suite works with your current notes, including an empty collection. It covers rendering, search, preferences, keyboard behavior and actual offline navigation. Every published page also receives axe accessibility audits and hydration checks across five reader profiles (fresh storage, saved dark/light themes, German/English, desktop/mobile). Search dialogs and mobile navigation are scanned too. See [the audit coverage and upstream research](docs/testing.md). `pnpm test:demo` also runs the original example-specific journeys when the starter notes are unchanged. These tests use the built production app. `pnpm verify` runs type checking, generation and output privacy checks.
+The default Gherkin suite works with your current notes, including an empty collection. It covers rendering, search, preferences, keyboard behavior and actual offline navigation. Every published page also receives axe accessibility audits and hydration checks across five reader profiles (fresh storage, saved dark/light themes, English-only, desktop/mobile). Search dialogs and mobile navigation are scanned too. See [the audit coverage and upstream research](docs/testing.md). `pnpm test:demo` also runs the original example-specific journeys when the starter notes are unchanged. These tests use the built production app. `pnpm verify` runs type checking, generation and output privacy checks.
 
 ## Content flow
 
@@ -147,20 +147,15 @@ Source notes may supply `sourceUrl` and `author`; the article renders an origina
 
 Dark mode is the default. The sun/moon button in the header switches between dark and light. Your choice is saved locally in the browser and works offline.
 
-## Interface languages
+## Interface language
 
-The interface supports German and English without an i18n dependency. The language selector saves your choice locally; Markdown notes keep their original text.
+The interface is English-only, including dates, document language and app metadata. There is no language selector or saved language preference. Markdown notes keep their authored text.
 
-- Edit UI copy in `apps/wiki/app/i18n/de.ts` and `apps/wiki/app/i18n/en.ts`.
-- Add a language by copying `en.ts`, translating its values, then registering the module in `messages` and its native label in `localeNames` in `apps/wiki/app/i18n/index.ts`.
-- Change `defaultLocale` in that same file to change the initial language.
-- Components use `t('key', { count: 3 })`. Keep the `{count}`-style placeholders when translating. The `satisfies` declaration checks that every key exists. Dates use the selected locale through native `Intl`.
-
-This small layer handles literal text and named replacements; it does not interpret HTML, ICU messages or automatically translate content. The initial static HTML uses the default language, then restores a saved preference after hydration.
+Edit UI copy in `apps/wiki/app/i18n/en.ts`. Components use `t('key', { count: 3 })` for typed copy keys and named replacements.
 
 ## Resource types
 
-A source note (`kind: source`) can set `resourceType` to `blog`, `youtube`, `podcast`, `film`, `book`, `documentation` or `other`. The library shows translated resource labels and filters with counts. Sources without a type fall back to `other`; topics and insights do not have resource types. Empty categories stay available so you can see which kinds of sources are still missing.
+A source note (`kind: source`) can set `resourceType` to `blog`, `youtube`, `podcast`, `film`, `book`, `documentation`, `social` or `other`. The library shows English resource labels and filters with counts. Sources without a type fall back to `other`; topics and insights do not have resource types. Empty categories stay available so you can see which kinds of sources are still missing. Social posts retain their original source URL and searchable summaries, with X / Tweet labels for X and Twitter links. Capture guidance preserves screenshot evidence locally, explains idea connections, and recognizes X/Twitter aliases as the same status.
 
 ```yaml
 kind: source
@@ -216,3 +211,21 @@ unknown; do not invent them. Website URLs and names for one ID must be consisten
 CI adds the fictional sources in `tests/fixtures/contributors/` to exercise
 coauthors, multiple roles, namesakes, navigation and offline author pages. They
 are not part of the template's authored content.
+
+## Author profiles
+
+Source capture researches missing contributors through official biographies and confirmed professional profiles. Store reusable profile frontmatter in `apps/wiki/content/public/authors/<id>.md` (or the private equivalent). Profiles contain a short `bio`, `url`, `links`, evidence `sources`, and `updated` date. The ID and name match source credits; roles remain specific to each source. Missing profiles still render names and initials.
+
+Optional portraits live beside the profile, referenced by `avatar` and attributed with `avatarSource`. PNG, JPG and WebP files under 100 KB are embedded in compiled content for offline use and audience isolation. Profiles without published resources are not included in the public catalog. The capture workflow is documented in `.agents/skills/wiki/references/author-profiles.md`.
+
+The library author filter combines with note-kind and resource-type filters, persists in the `author` query parameter, and links to each contributor's resource page. Concepts and insights are not attributed to the authors of their cited sources.
+
+YouTube source URLs (including podcasts hosted on YouTube) show a video preview below the article summary. Clicking Play loads the embedded player; offline readers see a connection message while the notes remain readable. The original source link remains available if embedding is restricted. Video playback and remote thumbnails require a connection.
+
+Mermaid code fences render as diagrams using the wiki's paper, ink and terracotta
+palette, with automatic light/dark updates. The renderer is bundled locally for
+offline reading, loaded only when a diagram is present. Include `accTitle` and
+`accDescr`, keep diagrams focused, and use nearby prose for interpretation and
+evidence. The shared theme replaces per-diagram configuration and styling; source
+text remains available as a fallback. Theme settings follow
+[Mermaid's base-theme customization](https://mermaid.js.org/config/theming.html).

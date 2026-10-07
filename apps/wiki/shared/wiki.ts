@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const noteKindSchema = z.enum(['source', 'concept', 'insight'])
-export const resourceTypes = ['blog', 'youtube', 'podcast', 'film', 'book', 'documentation', 'other'] as const
+export const resourceTypes = ['blog', 'youtube', 'podcast', 'film', 'book', 'documentation', 'social', 'other'] as const
 export const resourceTypeSchema = z.enum(resourceTypes)
 export type ResourceType = z.infer<typeof resourceTypeSchema>
 export const relationSchema = z.object({ target: z.string(), kind: z.enum(['links', 'builds-on', 'contradicts']) })
@@ -29,7 +29,25 @@ export const noteMetadataSchema = z.object({
   demo: z.boolean().default(true),
   relations: z.array(relationSchema).default([]),
 })
+const profileLinkSchema = z.object({ label: z.string().trim().min(1), url: z.url().refine(value => /^https?:\/\//.test(value)) })
+export const authorProfileSchema = z.object({
+  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  name: z.string().trim().min(1),
+  bio: z.string().trim().min(1).max(600).optional(),
+  url: z.url().refine(value => /^https?:\/\//.test(value)).optional(),
+  avatar: z.string().regex(/^[a-z0-9-]+\.(?:png|jpg|webp)$/).optional(),
+  avatarSource: z.url().refine(value => /^https?:\/\//.test(value)).optional(),
+  links: z.array(profileLinkSchema).default([]),
+  sources: z.array(profileLinkSchema).min(1),
+  updated: z.iso.date(),
+}).strict()
+export const compiledAuthorProfileSchema = authorProfileSchema.omit({ avatar: true }).extend({
+  avatar: z.string().regex(/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/).optional(),
+})
+export type AuthorProfile = z.infer<typeof compiledAuthorProfileSchema>
+
 export const compiledNoteSchema = noteMetadataSchema.extend({
+  authorProfiles: z.array(compiledAuthorProfileSchema).default([]),
   document: z.string(),
   markdown: z.string(),
   searchText: z.string(),
@@ -39,7 +57,7 @@ export const compiledNoteSchema = noteMetadataSchema.extend({
 export type NoteKind = z.infer<typeof noteKindSchema>
 export type Note = z.infer<typeof compiledNoteSchema>
 export type Relation = z.infer<typeof relationSchema>
-export const kindLabels: Record<NoteKind, string> = { source: 'Quelle', concept: 'Thema', insight: 'Erkenntnis' }
+export const kindLabels: Record<NoteKind, string> = { source: 'Source', concept: 'Topic', insight: 'Insight' }
 export const kindColors: Record<NoteKind, string> = { source: '#698575', concept: '#c16b4e', insight: '#8b80a4' }
 
 export function authorIdFor(note: Pick<Note, 'author' | 'authorId'>): string | undefined {

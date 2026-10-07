@@ -13,14 +13,15 @@
   },
   "dependencies": {
     "@comark/vue": "0.7.0",
+    "@commonplace/ui": "workspace:*",
     "@nuxt/content": "3.16.1",
     "@vite-pwa/nuxt": "1.1.1",
     "comark": "0.7.0",
     "force-graph": "^1.49.0",
+    "mermaid": "^12.1.0",
     "nuxt": "4.5.2",
     "vue": "3.5.43",
-    "zod": "^4.0.0",
-    "@commonplace/ui": "workspace:*"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

@@ -1,5 +1,3 @@
-import type de from './de'
-
 export default {
   "contributors": "Contributors",
   "credit_author": "Author",
@@ -11,7 +9,14 @@ export default {
   "credit_speaker": "Speaker",
   "credit_organization": "Organization",
 
-  "authors": "Contributors",
+  "authors": "Authors & contributors",
+  "filterByAuthor": "Filter library by this author",
+  "authorFilter": "Filter by author",
+  "allAuthors": "All authors",
+  "authorLinks": "Social links",
+  "profileSources": "Profile sources",
+  "avatarSource": "Portrait source",
+  "resetFilters": "Clear filters",
   "author": "Author",
   "authorResources": "Resources by {name}",
   "authorCount": "{count} resources",
@@ -42,7 +47,6 @@ export default {
   "filesFooter": "Markdown. Git. Your knowledge.",
   "lightTheme": "Switch to light theme",
   "darkTheme": "Switch to dark theme",
-  "language": "Sprache / Language",
   "findThoughts": "Find a thought",
   "searchLabel": "Search your knowledge",
   "closeSearch": "Close search",
@@ -137,8 +141,9 @@ export default {
   "resource_film": "Film",
   "resource_book": "Book",
   "resource_documentation": "Documentation",
+  "resource_social": "Social posts",
   "resource_other": "Other",
   "noResources": "There are no resources of this type yet.",
   "showAllResources": "Show all resources",
   "resourceType": "Resource type"
-} satisfies Record<keyof typeof de, string>
+}

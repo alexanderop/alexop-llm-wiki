@@ -8,11 +8,11 @@ The generator walks every production `index.html`, including all compiled Markdo
 
 | Profile | Storage | Locale | Theme | Viewport |
 | --- | --- | --- | --- | --- |
-| Fresh desktop | Empty | German default | Dark default | 1280 × 900 |
+| Fresh desktop | Empty | English | Dark default | 1280 × 900 |
 | English desktop | Persisted | English | Dark | 1280 × 900 |
-| German desktop | Persisted | German | Light | 1280 × 900 |
+| Light desktop | Persisted | English | Light | 1280 × 900 |
 | English mobile | Persisted | English | Light | 390 × 844 |
-| German mobile | Persisted | German | Dark | 390 × 844 |
+| Dark mobile | Persisted | English | Dark | 390 × 844 |
 
 These are five representative profiles, not every possible combination or device. Each page is loaded directly from generated HTML, waits for Nuxt's `onNuxtReady` signal, checks the restored settings, and runs all default axe rules against the full document. The search dialog is scanned after opening; on mobile, the expanded navigation is scanned too. Focus restoration and real interactions also ensure we do not merely inspect inert server HTML. Graph canvases hidden by responsive CSS are intentionally not required to be visible.
 
@@ -31,3 +31,10 @@ Inspected on 2026-10-04:
 - [npmx accessibility tests](https://github.com/npmx-dev/npmx.dev/blob/main/test/nuxt/a11y.spec.ts): uses axe in component tests. Our project keeps its Playwright-only policy and scans complete pages without disabling page-level landmark rules.
 - [Next.js hydration regression tests](https://github.com/vercel/next.js/blob/canary/test/development/acceptance/hydration-error.test.ts): deliberately introduces server/client differences and asserts diagnostics. We use a changed server response to exercise the real Vue detector.
 - [Playwright accessibility guide](https://playwright.dev/docs/accessibility-testing): recommends `@axe-core/playwright`, scanning after revealing interactive states, and combining automation with manual testing.
+
+YouTube sources render an accessible thumbnail and Play button before loading the external player. Page audits include this initial state without excluding DOM nodes or disabling axe rules. The video journey verifies activation, the video identity, placement and offline recovery against an isolated provider fixture. YouTube's own player controls have upstream ARIA violations when loaded; the checks do not certify their accessibility or guarantee remote playback availability. The original YouTube link remains available.
+
+Mermaid scenarios discover diagrams from the compiled collection, exercise theme
+changes, source disclosure, narrow viewports and offline reloads. Page audits wait
+for diagram SVGs before running the full-DOM accessibility checks. Diagram-free
+collections remain supported.

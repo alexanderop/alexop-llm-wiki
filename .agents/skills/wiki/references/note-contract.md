@@ -20,7 +20,7 @@ relations: []
 ---
 ```
 
-Use the current date for a real change. Omit unknown author/sourceUrl fields. Keep filenames equal to stable note IDs; do not rename an existing note from a changed source title. `resourceType` applies only to source notes. Use `podcast` for an episode even if its URL is YouTube, and `other` for unsupported/uncertain media. Concepts and insights have their own `kind` and cite supporting source notes.
+Use the current date for a real change. Omit unknown author/sourceUrl fields. Keep filenames equal to stable note IDs; do not rename an existing note from a changed source title. `resourceType` applies only to source notes. Use `social` for social posts and threads, keeping platform and handle in the source account. Use `podcast` for an episode even if its URL is YouTube, and `other` for unsupported/uncertain media. Concepts and insights have their own `kind` and cite supporting source notes.
 
 In the body record:
 
@@ -46,3 +46,20 @@ of legacy author fields. Valid roles are `author`, `host`, `guest`, `editor`,
 `translator`, `director`, `speaker`, `organization`. A role applies to the source,
 not globally to the person. Reuse stable IDs, separate namesakes, and combine
 multiple roles in one entry. Only credit roles supported by the inspected source.
+
+Reusable bios, portraits, websites, social links and evidence belong in separate author profiles. Follow [author discovery and profiles](author-profiles.md); source metadata retains only identity and source-specific roles.
+
+### Diagrams
+
+Use a fenced `mermaid` block when it clarifies a supported process, decision,
+sequence or relationship. Do not add diagrams to meet a quota or repeat a simple
+list. Keep labels concise and include `accTitle` and `accDescr` for an accessible
+text explanation. Explain the diagram in nearby prose and identify synthesis as
+interpretation; arrows must not invent causality or source agreement.
+
+The wiki supplies its paper/ink/terracotta theme automatically, including dark
+mode. Use standard Mermaid syntax without frontmatter, initialization directives,
+`style`, `classDef`, `linkStyle` or `click` commands. Never hardcode colors or embed
+HTML. Prefer small flowcharts and sequence diagrams; split crowded diagrams into
+separate explanations. Check the rendered result in both themes and at a narrow
+viewport. Diagram source remains available if rendering fails or JavaScript is off.

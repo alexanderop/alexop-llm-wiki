@@ -10,3 +10,7 @@ Feature: Discover resources by author
     Given a reader using "en-dark-mobile"
     When I open an unknown author
     Then I see a not found response
+
+  Scenario: Filter the library by a contributor and retain the selection
+    Given I open my template wiki
+    Then I can filter the library to a contributor's resources

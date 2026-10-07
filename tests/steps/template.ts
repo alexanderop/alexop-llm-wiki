@@ -2,16 +2,15 @@ import { readdir } from 'node:fs/promises'
 import { expect } from '@playwright/test'
 import { createBdd } from 'playwright-bdd'
 import en from '../../apps/wiki/app/i18n/en'
-import de from '../../apps/wiki/app/i18n/de'
 
 const { Given, When, Then } = createBdd()
 Given('I open my template wiki', async ({ page }) => {
   await page.addInitScript(() => {
-    if (!localStorage.getItem('commonplace-locale')) localStorage.setItem('commonplace-locale', 'en')
     if (!localStorage.getItem('commonplace-theme')) localStorage.setItem('commonplace-theme', 'dark')
   })
   await page.goto('./')
-  await expect(page.getByRole('combobox', { name: en.language })).toHaveText('English')
+  await expect(page.locator('html')).toHaveAttribute('data-hydrated', 'true')
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page.locator('main').getByRole('heading', { level: 1 })).toBeVisible()
 })
 Then('the library reflects my Markdown files', async ({ page }) => {
@@ -42,14 +41,12 @@ Then('the template and graph work without a network', async ({ page }) => {
   await page.getByRole('button').filter({ hasText: en.findThoughts }).click()
   await expect(page.getByRole('textbox', { name: en.searchLabel })).toBeFocused()
 })
-When('I change the template appearance and language', async ({ page }) => {
+When('I change the template appearance', async ({ page }) => {
   await page.getByRole('button', { name: en.lightTheme }).click()
-  await page.getByRole('combobox', { name: en.language }).click(); await page.getByRole('option', { name: 'Deutsch', exact: true }).click()
   await page.reload()
 })
 Then('the template remembers my choices after reload', async ({ page }) => {
-  await expect(page.getByRole('combobox', { name: de.language })).toHaveText('Deutsch')
-  await expect(page.getByRole('button', { name: de.darkTheme })).toBeVisible()
+  await expect(page.getByRole('button', { name: en.darkTheme })).toBeVisible()
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
 })
 When('I open and close template search with the keyboard', async ({ page }) => {
@@ -62,4 +59,20 @@ When('I open and close template search with the keyboard', async ({ page }) => {
 })
 Then('focus returns to the template search button', async ({ page }) => {
   await expect(page.getByRole('button').filter({ hasText: en.findThoughts })).toBeFocused()
+})
+
+Given('my browser previously preferred German', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('commonplace-locale', 'de'))
+})
+When('I view the wiki at {int} pixels wide', async ({ page }, width: number) => {
+  await page.setViewportSize({ width, height: 900 })
+  if (width < 681) await page.getByRole('button', { name: en.menu, exact: true }).click()
+})
+Then('the wiki uses English without a language selector', async ({ page }) => {
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.locator('main h1')).toHaveText('Good ideas.New connections.')
+  await expect(page.getByRole('combobox', { name: /language|sprache/i })).toHaveCount(0)
+  if (await page.getByRole('dialog').isVisible()) {
+    await expect(page.getByRole('navigation', { name: en.notes })).toBeVisible()
+  }
 })

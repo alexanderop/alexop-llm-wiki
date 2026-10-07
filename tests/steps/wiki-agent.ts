@@ -60,3 +60,35 @@ Then('a public note referencing that private source fails public compilation', a
   const personal = await exec(process.execPath, [compiler], { ...options, env: { ...options.env, WIKI_AUDIENCE: 'personal' } })
   expect(personal.stdout).toContain('Compiled 2 personal notes')
 })
+
+Then('profile enrichment respects the publication audience', async ({ page }) => {
+  const root = roots.get(page)!
+  const app = join(root, 'apps/wiki')
+  await mkdir(join(app, 'content/private/authors'))
+  await writeFile(join(app, 'content/private/authors/sample-author.md'), `---\nid: sample-author\nname: Sample Author\nbio: PRIVATE_PROFILE_CANARY\nsources:\n  - label: Private research\n    url: https://example.com/private-profile\nupdated: 2026-10-05\n---\n`)
+  await writeFile(join(app, 'content/public/public-source.md'), source.replace('existing-video', 'public-source').replace('kind: source', 'kind: source\ncontributors:\n  - id: sample-author\n    name: Sample Author\n    roles: [author]'))
+  const compile = (audience: string) => exec(process.execPath, [compiler], { cwd: app, env: { ...process.env, WIKI_AUDIENCE: audience } })
+  await compile('public')
+  const publicData = await readFile(join(app, '.generated/public/public-source.json'), 'utf8')
+  expect(publicData).not.toContain('PRIVATE_PROFILE_CANARY')
+  expect(JSON.parse(publicData).authorProfiles).toEqual([])
+  await compile('personal')
+  expect(await readFile(join(app, '.generated/personal/public-source.json'), 'utf8')).toContain('PRIVATE_PROFILE_CANARY')
+  await mkdir(join(app, 'content/public/authors'))
+  await writeFile(join(app, 'content/public/authors/sample-author.md'), `---\nid: sample-author\nname: Sample Author\navatar: ../private.png\nsources:\n  - label: Official\n    url: https://example.com/\nupdated: 2026-10-05\n---\n`)
+  await expect(compile('public')).rejects.toThrow()
+})
+
+Then('alternate social URLs identify the existing post without merging different posts', async ({ page }) => {
+  const root = roots.get(page)!
+  await writeFile(join(root, 'apps/wiki/content/private/existing-post.md'), source.replaceAll('existing-video', 'existing-post').replace('resourceType: youtube', 'resourceType: social').replace('https://www.youtube.com/watch?v=abcdefghijk', 'https://twitter.com/example/status/123456789'))
+  for (const url of ['https://x.com/example/status/123456789?s=20', 'https://mobile.twitter.com/example/status/123456789/photo/1', 'https://www.x.com/newhandle/status/123456789']) {
+    const result = await inspect(page, url)
+    expect(result.key).toBe('x:123456789')
+    expect(result.playbook).toBe('ingest-social')
+    expect(result.action).toBe('review-existing')
+    expect(result.matches.map((match: { noteId: string }) => match.noteId)).toEqual(['existing-post'])
+  }
+  expect((await inspect(page, 'https://x.com/example/status/123456780')).action).toBe('new-source')
+  expect((await inspect(page, 'https://x.com.evil.example/example/status/123456789')).action).toBe('new-source')
+})
