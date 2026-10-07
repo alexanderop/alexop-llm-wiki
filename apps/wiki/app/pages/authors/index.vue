@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const wiki = await useWiki()
-useSeoMeta({ title: () => `${t('authors')} · Commonplace` })
+useSeoMeta({ title: () => `${t('authors')} · alexop-llm-wiki` })
 </script>
 <template>
   <WikiShell><div class="library-page authors-page">

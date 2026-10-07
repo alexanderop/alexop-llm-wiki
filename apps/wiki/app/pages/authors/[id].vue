@@ -5,7 +5,7 @@ const route = useRoute()
 const wiki = await useWiki()
 const author = computed(() => wiki.value.author(String(route.params.id)))
 if (!author.value) throw createError({ statusCode: 404, statusMessage: t('authorMissing') })
-useSeoMeta({ title: () => `${author.value?.name} · ${t('authors')} · Commonplace` })
+useSeoMeta({ title: () => `${author.value?.name} · ${t('authors')} · alexop-llm-wiki` })
 </script>
 <template>
   <WikiShell><div v-if="author" class="library-page authors-page">
